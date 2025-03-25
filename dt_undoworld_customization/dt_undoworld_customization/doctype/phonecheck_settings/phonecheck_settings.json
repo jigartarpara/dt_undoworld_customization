@@ -1,0 +1,81 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-06-24 14:21:30.747973",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "login_credentials_section",
+  "username",
+  "token",
+  "token_creation_datetime",
+  "column_break_uwzc",
+  "password",
+  "fetch_devices_details"
+ ],
+ "fields": [
+  {
+   "fieldname": "login_credentials_section",
+   "fieldtype": "Section Break",
+   "label": "Login Credentials"
+  },
+  {
+   "fieldname": "username",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Username",
+   "reqd": 1
+  },
+  {
+   "fieldname": "token",
+   "fieldtype": "Small Text",
+   "label": "Token",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_uwzc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "password",
+   "fieldtype": "Password",
+   "in_list_view": 1,
+   "label": "Password",
+   "reqd": 1
+  },
+  {
+   "fieldname": "fetch_devices_details",
+   "fieldtype": "Button",
+   "label": "Fetch Devices Details"
+  },
+  {
+   "fieldname": "token_creation_datetime",
+   "fieldtype": "Datetime",
+   "label": "Token Creation Datetime",
+   "read_only": 1
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-06-24 15:28:07.348010",
+ "modified_by": "Administrator",
+ "module": "DT-UndoWorld-Customization",
+ "name": "Phonecheck Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

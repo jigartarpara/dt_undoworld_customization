@@ -1,0 +1,102 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-06-24 17:08:48.459121",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "imei",
+  "ram",
+  "model_name",
+  "serial",
+  "itemsku_serial_no",
+  "quality_test",
+  "column_break_udis",
+  "imei2",
+  "memory",
+  "model_no",
+  "udid",
+  "remarks"
+ ],
+ "fields": [
+  {
+   "fieldname": "imei",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "IMEI"
+  },
+  {
+   "fieldname": "ram",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "RAM"
+  },
+  {
+   "fieldname": "model_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Model Name"
+  },
+  {
+   "fieldname": "serial",
+   "fieldtype": "Data",
+   "label": "Serial"
+  },
+  {
+   "fieldname": "itemsku_serial_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "ItemSKU (Serial No)"
+  },
+  {
+   "fieldname": "column_break_udis",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "imei2",
+   "fieldtype": "Data",
+   "label": "IMEI2"
+  },
+  {
+   "fieldname": "memory",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Memory"
+  },
+  {
+   "fieldname": "model_no",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Model No"
+  },
+  {
+   "fieldname": "udid",
+   "fieldtype": "Data",
+   "label": "UDID"
+  },
+  {
+   "default": "0",
+   "fieldname": "quality_test",
+   "fieldtype": "Check",
+   "label": "Quality Test"
+  },
+  {
+   "fieldname": "remarks",
+   "fieldtype": "Small Text",
+   "label": "Remarks"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2024-08-05 09:52:21.102835",
+ "modified_by": "Administrator",
+ "module": "DT-UndoWorld-Customization",
+ "name": "Phonecheck Log Detail",
+ "owner": "Administrator",
+ "permissions": [],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

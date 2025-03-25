@@ -1,0 +1,45 @@
+{
+ "charts": [],
+ "content": "[{\"id\":\"842ZiyhA14\",\"type\":\"header\",\"data\":{\"text\":\"<span class=\\\"h4\\\">Phonecheck Integration</span>\",\"col\":12}},{\"id\":\"MCxtmQdmRG\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Phonecheck Settings\",\"col\":3}},{\"id\":\"ITpwprT2y2\",\"type\":\"shortcut\",\"data\":{\"shortcut_name\":\"Phonecheck Log\",\"col\":3}}]",
+ "creation": "2024-06-25 11:13:43.975367",
+ "custom_blocks": [],
+ "docstatus": 0,
+ "doctype": "Workspace",
+ "for_user": "",
+ "hide_custom": 0,
+ "icon": "integration",
+ "idx": 0,
+ "indicator_color": "purple",
+ "is_hidden": 0,
+ "label": "Phonecheck Integration",
+ "links": [],
+ "modified": "2024-06-25 11:14:52.425147",
+ "modified_by": "Administrator",
+ "module": "DT-UndoWorld-Customization",
+ "name": "Phonecheck Integration",
+ "number_cards": [],
+ "owner": "Administrator",
+ "parent_page": "",
+ "public": 1,
+ "quick_lists": [],
+ "roles": [],
+ "sequence_id": 39.0,
+ "shortcuts": [
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Phonecheck Settings",
+   "link_to": "Phonecheck Settings",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "label": "Phonecheck Log",
+   "link_to": "Phonecheck Log",
+   "stats_filter": "[]",
+   "type": "DocType"
+  }
+ ],
+ "title": "Phonecheck Integration"
+}

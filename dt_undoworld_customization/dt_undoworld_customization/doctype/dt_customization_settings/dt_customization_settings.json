@@ -1,0 +1,64 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2024-06-05 09:51:58.677027",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "scrap_item",
+  "column_break_iriw",
+  "consume_scrap_item",
+  "integration_with_phone_check_section",
+  "fetch_device_details"
+ ],
+ "fields": [
+  {
+   "fieldname": "scrap_item",
+   "fieldtype": "Link",
+   "label": "Scrap Item For BOM and Stock Entry",
+   "options": "Item"
+  },
+  {
+   "fieldname": "consume_scrap_item",
+   "fieldtype": "Button",
+   "label": "Consume Scrap Item"
+  },
+  {
+   "fieldname": "column_break_iriw",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "integration_with_phone_check_section",
+   "fieldtype": "Section Break",
+   "label": "Integration With Phone Check"
+  },
+  {
+   "fieldname": "fetch_device_details",
+   "fieldtype": "Button",
+   "label": "Fetch Device Details"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "issingle": 1,
+ "links": [],
+ "modified": "2024-06-24 12:28:59.593798",
+ "modified_by": "Administrator",
+ "module": "DT-UndoWorld-Customization",
+ "name": "DT-Customization Settings",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "print": 1,
+   "read": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
