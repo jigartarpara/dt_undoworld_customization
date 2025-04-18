@@ -579,13 +579,13 @@
   "doctype_event": "After Submit",
   "enable_rate_limit": 0,
   "event_frequency": "All",
-  "modified": "2025-04-18 20:38:07.524061",
+  "modified": "2025-04-18 21:14:59.011519",
   "module": "DT-UndoWorld-Customization",
   "name": "Start Warranty",
   "rate_limit_count": 5,
   "rate_limit_seconds": 86400,
   "reference_doctype": "Delivery Note",
-  "script": "for row in doc.items:\n    if row.serial_and_batch_bundle:\n        bundle = frappe.get_doc(\"Serial and Batch Bundle\", row.serial_and_batch_bundle)\n        frappe.msgprint( row.serial_and_batch_bundle)\n        for srn in bundle.entries:\n            if srn.serial_no:\n                srn_doc = frappe.get_doc(\"Serial No\", srn.serial_no )\n                srn_doc.custom_warranty_start_date = doc.posting_date\n                srn_doc.warranty_period = frappe.db.get_value(\"Item\", srn_doc.item_code, \"warranty_period\")\n                srn_doc.warranty_expiry_date = frappe.utils.add_days(srn_doc.custom_warranty_start_date, str(srn_doc.warranty_period))\n                srn_doc.flags.ignore_permissions = True\n                srn_doc.save()",
+  "script": "for row in doc.items:\n    if row.serial_and_batch_bundle:\n        bundle = frappe.get_doc(\"Serial and Batch Bundle\", row.serial_and_batch_bundle)\n        for srn in bundle.entries:\n            if srn.serial_no:\n                srn_doc = frappe.get_doc(\"Serial No\", srn.serial_no)\n                srn_doc.custom_warranty_start_date = doc.posting_date\n                srn_doc.warranty_period = frappe.db.get_value(\"Item\", srn_doc.item_code, \"warranty_period\")\n                srn_doc.warranty_expiry_date = frappe.utils.add_days(srn_doc.custom_warranty_start_date, srn_doc.warranty_period)\n                srn_doc.flags.ignore_permissions = True\n                srn_doc.save()\n    elif row.serial_no:\n        srn_doc = frappe.get_doc(\"Serial No\", row.serial_no)\n        srn_doc.custom_warranty_start_date = doc.posting_date\n        srn_doc.warranty_period = frappe.db.get_value(\"Item\", srn_doc.item_code, \"warranty_period\")\n        srn_doc.warranty_expiry_date = frappe.utils.add_days(srn_doc.custom_warranty_start_date, srn_doc.warranty_period)\n        srn_doc.flags.ignore_permissions = True\n        srn_doc.save()\n        \nfrappe.db.commit()",
   "script_type": "DocType Event"
  }
 ]
