@@ -144,6 +144,7 @@ def create_stock_entry_for_old_parts(doc):
                 'qty': item.qty,
                 'uom': item.uom,
                 'transfer_qty': item.stock_qty,
+                't_warehouse':"Old Parts Warehouse - UW",
                 'conversion_factor': item.conversion_factor,
                 'allow_zero_valuation_rate': 1,
                 'valuation_rate': 0,
