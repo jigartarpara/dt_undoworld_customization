@@ -161,7 +161,7 @@ doctype_js = {"Serial No" : "public/js/serial_no.js",
 # ------------------------------
 #
 override_whitelisted_methods = {
-	"erpnext.stock.doctype.delivery_note.delivery_note.make_sales_invoice": "dt_undoworld_customization.public.delivery_note.custom_make_sales_invoice"
+	"erpnext.stock.doctype.delivery_note.delivery_note.make_sales_invoice": "dt_undoworld_customization.public.py.delivery_note.custom_make_sales_invoice"
 }
 #
 # each overriding function accepts a `data` argument;
