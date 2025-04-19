@@ -160,9 +160,9 @@ doctype_js = {"Serial No" : "public/js/serial_no.js",
 # Overriding Methods
 # ------------------------------
 #
-# override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "dt_undoworld_customization.event.get_events"
-# }
+override_whitelisted_methods = {
+	"erpnext.stock.doctype.delivery_note.delivery_note.make_sales_invoice": "dt_undoworld_customization.public.custom_make_sales_invoice"
+}
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
