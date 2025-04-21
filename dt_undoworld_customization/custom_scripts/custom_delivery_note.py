@@ -73,9 +73,8 @@ def custom_make_sales_invoice(source_name, target_doc=None, args=None):
 					"so_detail": "so_detail",
 					"against_sales_order": "sales_order",
 					"cost_center": "cost_center",
-					"serial_and_batch_bundle":"serial_and_batch_bundle",
-					"use_serial_batch_fields":"use_serial_batch_fields",
-					"serial_no":"serial_no"
+					"serial_and_batch_bundle":"custom_serial_and_batch_bundle_display",
+					"serial_no":"custom_serial_no_display"
 				},
 				"postprocess": update_item,
 				"filter": lambda d: get_pending_qty(d) <= 0
