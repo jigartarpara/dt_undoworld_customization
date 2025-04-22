@@ -26,3 +26,6 @@ def add_detail_to_serial_no(serial_no, imei1, imei2, eid, sn):
     doc.custom_eid = eid
     doc.custom_sn = sn
     doc.save()
+
+
+@frappe.whitelist()  
