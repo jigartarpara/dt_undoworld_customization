@@ -29,7 +29,8 @@ app_license = "mit"
 
 # include js in doctype views
 doctype_js = {"Serial No" : "public/js/serial_no.js",
-              "Stock Entry" : "public/js/stock_entry.js"}
+              "Stock Entry" : "public/js/stock_entry.js",
+              "Work Order" : "public/js/work_order.js"}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -232,7 +233,6 @@ doc_events = {
 	"Stock Entry": {
 		"before_validate": "dt_undoworld_customization.public.py.stock_entry.before_validate",
         "validate": "dt_undoworld_customization.public.py.stock_entry.validate",
-        "on_submit": "dt_undoworld_customization.public.py.stock_entry.on_submit",
         "before_cancel": "dt_undoworld_customization.public.py.stock_entry.before_cancel"
 	},
     "BOM": {
@@ -272,5 +272,6 @@ auto_cancel_exempted_doctypes =['Stock Entry']
 
 
 override_doctype_class = {
-	"Payroll Entry": "dt_undoworld_customization.public.py.payroll.customPayrollEntry"
+	"Payroll Entry": "dt_undoworld_customization.public.py.payroll.customPayrollEntry",
+    "Stock Entry" : "dt_undoworld_customization.public.py.stock_entry.customStockEntry"
 }
