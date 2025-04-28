@@ -16,6 +16,7 @@ frappe.ui.form.on('Work Order', {
 				if (bom_item) {
 					frappe.model.set_value(wo_item.doctype, wo_item.name, 'custom_is_old_phone', bom_item.custom_is_old_phone || 0);
 					frappe.model.set_value(wo_item.doctype, wo_item.name, 'custom_is_part_missing', bom_item.custom_is_part_missing || 0);
+                    frappe.model.set_value(wo_item.doctype, wo_item.name, 'custom_serial_number', bom_item.custom_serial_no || "");
 				}
 			});
 		});
