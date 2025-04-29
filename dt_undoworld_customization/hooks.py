@@ -247,6 +247,9 @@ doc_events = {
         },
     "Sales Invoice": {
             "before_submit": "dt_undoworld_customization.public.py.sales_invoice.before_submit"
+        },
+    "Sales Order":{
+        "before_validate": "dt_undoworld_customization.public.py.sales_order.before_validate"
         }
 }
 
