@@ -8,7 +8,7 @@ def before_validate(self, method):
     if self.custom_order_status == 'Fulfiled':
         if self.get('custom_order_status') == "Fulfiled" and self.get_db_value('custom_order_status') != 'Fulfiled':
 
-            custom_mobile_number = self.custom_mobile_number
+            custom_mobile_number = "+91"+str(self.custom_mobile_number)
             if not custom_mobile_number:
                 return
             
@@ -30,7 +30,7 @@ def before_validate(self, method):
 
             if attachment:
                 # Assuming the first attachment is the one you want to send
-                file_url = frappe.utils.get_url()+attachment[0].file_url
+                file_url = "https://controlz.thecodeforge.in"+attachment[0].file_url
             else:
                 file_url = None 
 
