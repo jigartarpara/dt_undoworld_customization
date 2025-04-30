@@ -44,7 +44,8 @@ def run_workstation_logic(work_order_name):
             "use_serial_batch_fields":1,
             "serial_no": item.custom_serial_number,
             "s_warehouse": item.source_warehouse or "Stores - " + doc.company[:3],
-            "t_warehouse": to_warehouse
+            "t_warehouse": to_warehouse,
+            "allow_zero_valuation_rate":1
         })
 
     stock_entry.insert()
@@ -109,7 +110,8 @@ def move_to_next_workstation(work_order_name, selected_workstation):
                 "s_warehouse": row.workstation_warehouse,
                 "t_warehouse": to_warehouse,
                 "serial_no": row.serial_no,
-                "use_serial_batch_fields": 1
+                "use_serial_batch_fields": 1,
+                "allow_zero_valuation_rate":1
             })
             new_movements.append({
                 "workstation": selected_ws.name,
@@ -207,7 +209,8 @@ def process_old_parts(work_order_name):
         stock_entry.append("items", {
             "item_code": item_code,
             "qty": required_item.required_qty,
-            "t_warehouse": old_parts_warehouse
+            "t_warehouse": old_parts_warehouse,
+            "allow_zero_valuation_rate":1
             })
 
         existing = any(
