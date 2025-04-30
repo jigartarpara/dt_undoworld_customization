@@ -9,6 +9,7 @@ def before_validate(self, method):
         if self.get('custom_order_status') == "Fulfiled" and self.get_db_value('custom_order_status') != 'Fulfiled':
 
             custom_mobile_number = "+91"+str(self.custom_mobile_number)
+            print(custom_mobile_number)
             if not custom_mobile_number:
                 return
             
@@ -58,7 +59,7 @@ def before_validate(self, method):
 
             # Make the API call
             response = requests.post(url, headers=headers, json=data)
-
+            print(response.text)
             # Handle the response
             if response.status_code == 200:
                 frappe.msgprint("API call successful!")

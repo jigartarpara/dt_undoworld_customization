@@ -18,12 +18,12 @@ def run_workstation_logic(work_order_name):
 
     to_warehouse = current_ws.warehouse
     existing_item_keys = {
-        (row.item, row.workstation) for row in doc.custom_workstation_item_movement
+        (row.item,  row.serial_no,row.workstation) for row in doc.custom_workstation_item_movement
     }
 
     new_items = []
     for item in doc.required_items:
-        key = (item.item_code, current_ws.name)
+        key = (item.item_code, item.custom_serial_number,current_ws.name)
         if key not in existing_item_keys:
             new_items.append(item)
 
@@ -108,7 +108,8 @@ def move_to_next_workstation(work_order_name, selected_workstation):
                 "qty": row.qty,
                 "s_warehouse": row.workstation_warehouse,
                 "t_warehouse": to_warehouse,
-                "serial_no": row.serial_no
+                "serial_no": row.serial_no,
+                "use_serial_batch_fields": 1
             })
             new_movements.append({
                 "workstation": selected_ws.name,
@@ -172,7 +173,6 @@ def on_submit_work(work_order_name):
 def process_old_parts(work_order_name):
     # Fetch the Work Order
     doc = frappe.get_doc("Work Order", work_order_name)
-    print(doc)
 
     old_parts_warehouse = "Old Parts Warehouse - UW"
 
@@ -211,16 +211,16 @@ def process_old_parts(work_order_name):
             })
 
         existing = any(
-            d.item == item_code and d.target_warehouse == old_parts_warehouse
+            d.serial_no == custom_serial_no and d.item == item_code and d.target_warehouse == old_parts_warehouse
             for d in doc.custom_old_part_movement_table
         )
-        print(existing)
         if not existing:
             new_entry = {
                 "item": item_code,
                 "qty": required_item.required_qty,
                 "target_warehouse": old_parts_warehouse,
-                "stock_entry": stock_entry.name
+                "stock_entry": None,
+                "serial_no":custom_serial_no
             }
             doc.append("custom_old_part_movement_table", new_entry)
             added_items.append(item_code)
