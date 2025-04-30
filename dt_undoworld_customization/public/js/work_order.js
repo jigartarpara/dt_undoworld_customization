@@ -1,9 +1,12 @@
 frappe.ui.form.on('Work Order', {
     onload(frm) {
+
+        if (!frm.is_new()) return;
+
 		if (!frm.doc.bom_no || !frm.doc.required_items || !frm.doc.required_items.length) {
 			return;
 		}
-
+        
 		frappe.db.get_doc('BOM', frm.doc.bom_no).then(bom => {
 			// Create a map of item_code -> bom_item
 			let bom_item_map = {};
