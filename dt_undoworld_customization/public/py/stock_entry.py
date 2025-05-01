@@ -298,11 +298,35 @@ class customStockEntry(StockEntry):
 				"Material Consumption for Manufacture",
 			]:
 				if self.work_order and self.purpose == "Material Transfer for Manufacture":
-					item_dict = self.get_pending_raw_materials(backflush_based_on)
-					if self.to_warehouse and self.pro_doc:
-						for item in item_dict.values():
-							item["to_warehouse"] = self.pro_doc.wip_warehouse
+					item_dict={}
+					if self.pro_doc and self.pro_doc.doctype == "Work Order":
+						for wo_item in self.pro_doc.get("required_items", []):
+                                          
+							serial_no = wo_item.custom_serial_number or ""
+							key = f"{wo_item.item_code}::{serial_no}"
+                                          
+							if key not in item_dict:
+								from_warehouse=frappe.db.get_value("Serial No",wo_item.custom_serial_number,"warehouse")
+								print(from_warehouse)
+								item_dict[key] = {
+									"item_code": wo_item.item_code,
+									"qty": wo_item.required_qty,
+									"uom": wo_item.stock_uom,
+                                    "stock_uom": wo_item.stock_uom,
+                                    "s_warehouse":from_warehouse,
+									"to_warehouse": "Work In Progress - UW",
+                                    "serial_no": wo_item.custom_serial_number
+								}	
+							else:
+								if wo_item.custom_serial_number:
+									item_dict[wo_item.item_code]["serial_no"] = wo_item.custom_serial_number
+                                                                            
+					print(item_dict)
 					self.add_to_stock_entry_detail(item_dict)
+					for d in self.items:
+						if not d.s_warehouse:
+							d.s_warehouse = item_dict.get(f"{d.item_code}::{d.serial_no}", {}).get("s_warehouse")
+
 
 				elif (
 					self.work_order
@@ -369,12 +393,17 @@ class customStockEntry(StockEntry):
     
 					if self.pro_doc and self.pro_doc.doctype == "Work Order":
 						for wo_item in self.pro_doc.get("required_items", []):
-							if wo_item.item_code not in item_dict:
+                                          
+							serial_no = wo_item.custom_serial_number or ""
+							key = f"{wo_item.item_code}::{serial_no}"
+                            
+							if key not in item_dict:
 								from_warehouse=frappe.db.get_value("Serial No",wo_item.custom_serial_number,"warehouse")
-								item_dict[wo_item.item_code] = {
+								item_dict[key] = {
 									"item_code": wo_item.item_code,
 									"qty": wo_item.required_qty,
 									"uom": wo_item.stock_uom,
+                                    "stock_uom": wo_item.stock_uom,
                                     "s_warehouse":from_warehouse,
 									"to_warehouse": "",
                                     "serial_no": wo_item.custom_serial_number
