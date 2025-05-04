@@ -1,9 +1,9 @@
 frappe.ui.form.on('Serial No', {
     refresh: function(frm) {
-        			
-        frm.add_custom_button(__('Create BOM'), function(){
+        if (frm.doc.warehouse === "Renew Hub - UW" || frm.doc.warehouse === "Old Parts Warehouse - UW") {
+        frm.page.set_secondary_action(__('Create BOM'), function(){
             let d = new frappe.ui.Dialog({
-                title: 'Please Select the Fiished Good',
+                title: 'Please Select the Finished Good',
                 fields: [
                     {
                         label: 'Finished Good',
@@ -34,7 +34,8 @@ frappe.ui.form.on('Serial No', {
                 
             })
             d.show();
-        });
+        }).addClass("btn-primary");
+    }
         
     }
 })
