@@ -1,8 +1,9 @@
 import frappe
+from frappe.utils import getdate
 
 def execute(filters=None):
     columns = get_columns()
-    data = get_data()
+    data = get_data(filters)
     return columns, data
 
 def get_columns():
@@ -19,8 +20,26 @@ def get_columns():
         {"label": "Consumed Date", "fieldname": "consumed_date", "fieldtype": "Date", "width": 150}
     ]
 
-def get_data():
-    serials = frappe.get_all("Serial No", fields=["name", "creation", "status", "warehouse", "item_code", "custom_imei1"])
+def get_data(filters=None):
+    serial_filters = {}
+    if filters.get("status"):
+        serial_filters["status"] = filters["status"]
+    if filters.get("warehouse"):
+        serial_filters["warehouse"] = filters["warehouse"]
+    if filters.get("item_code"):
+        serial_filters["item_code"] = filters["item_code"]
+    if filters.get("serial_no"):
+        serial_filters["name"] = filters["serial_no"]
+    if filters.get("creation_date"):
+        serial_filters["creation"] = filters["creation_date"]  
+    if filters.get("custom_imei1"):
+        serial_filters["custom_imei1"] = filters["custom_imei1"]
+
+    po_filter = filters.get("purchase_order")
+    supplier_filter = filters.get("supplier")   
+
+    serials = frappe.get_all("Serial No", filters=serial_filters,
+    fields=["name", "creation", "status", "warehouse", "item_code", "custom_imei1"])
     if not serials:
         return []
 
@@ -101,10 +120,25 @@ def get_data():
 
     # --- Step 5: Final Row Build ---
     result = []
+    delivered_filter = filters.get("delivered_date")
+    consumed_filter = filters.get("consumed_date")
     for sn in serial_names:
         info = serial_map[sn]
         bundles = serial_to_bundles.get(sn, [])
         purchase_info = next((bundle_to_purchase.get(b) for b in bundles if bundle_to_purchase.get(b)), None)
+
+        delivered_date = delivered_map.get(sn)
+        consumed_date = consumed_map.get(sn)
+
+        if delivered_filter and delivered_date != getdate(delivered_filter):
+            continue
+        if consumed_filter and consumed_date != getdate(consumed_filter):
+            continue
+
+        if po_filter and (not purchase_info or purchase_info["purchase_order"] != po_filter):
+            continue
+        if supplier_filter and (not purchase_info or purchase_info["supplier"] != supplier_filter):
+            continue
 
         result.append({
             "serial_no": sn,
@@ -115,8 +149,8 @@ def get_data():
             "custom_imei1": info["custom_imei1"],
             "supplier": purchase_info["supplier"] if purchase_info else "",
             "purchase_order": purchase_info["purchase_order"] if purchase_info else "",
-            "delivered_date": delivered_map.get(sn),
-            "consumed_date": consumed_map.get(sn)
+            "delivered_date": delivered_date,
+            "consumed_date": consumed_date
         })
 
     return result
