@@ -30,8 +30,6 @@ def get_data(filters=None):
         serial_filters["item_code"] = filters["item_code"]
     if filters.get("serial_no"):
         serial_filters["name"] = filters["serial_no"]
-    if filters.get("creation_date"):
-        serial_filters["creation"] = filters["creation_date"]  
     if filters.get("custom_imei1"):
         serial_filters["custom_imei1"] = filters["custom_imei1"]
 
@@ -122,6 +120,8 @@ def get_data(filters=None):
     result = []
     delivered_filter = filters.get("delivered_date")
     consumed_filter = filters.get("consumed_date")
+    creation_filter = filters.get("creation_date")
+
     for sn in serial_names:
         info = serial_map[sn]
         bundles = serial_to_bundles.get(sn, [])
@@ -139,6 +139,10 @@ def get_data(filters=None):
             continue
         if supplier_filter and (not purchase_info or purchase_info["supplier"] != supplier_filter):
             continue
+
+        if creation_filter and info["creation_date"] != getdate(creation_filter):
+            continue
+
 
         result.append({
             "serial_no": sn,

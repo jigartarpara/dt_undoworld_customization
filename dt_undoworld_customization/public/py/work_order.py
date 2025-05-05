@@ -6,14 +6,14 @@ from frappe.utils import now
 def run_workstation_logic(work_order_name):
     doc = frappe.get_doc("Work Order", work_order_name)
 
-    # Get the current/latest workstation or default to L1
     # Get the latest workstation from existing item movements
     if doc.custom_workstation_item_movement:
         latest_entry = sorted(doc.custom_workstation_item_movement, key=lambda x: x.arrival_time)[-1]
         latest_ws_name = latest_entry.workstation
         current_ws = frappe.get_doc("Workstation", latest_ws_name)
     else:
-        current_ws = frappe.get_doc("Workstation", "L1")
+        first_ws=frappe.db.get_value("Workstation",{"custom_is_first_workstation":1},"name")
+        current_ws = frappe.get_doc("Workstation", first_ws)
 
 
     to_warehouse = current_ws.warehouse
@@ -24,7 +24,7 @@ def run_workstation_logic(work_order_name):
     new_items = []
     for item in doc.required_items:
         key = (item.item_code, item.custom_serial_number,current_ws.name)
-        if key not in existing_item_keys:
+        if key not in existing_item_keys and not item.custom_is_return:
             new_items.append(item)
 
     if not new_items:
@@ -76,17 +76,52 @@ def run_workstation_logic(work_order_name):
 def move_to_next_workstation(work_order_name, selected_workstation):
     doc = frappe.get_doc("Work Order", work_order_name)
 
-    workstation_sequence = ["L1", "L2", "L3", "L4"]
-
     if not doc.custom_workstation_item_movement:
         frappe.throw("No items found in current workstation.")
 
     latest_entries = sorted(doc.custom_workstation_item_movement, key=lambda x: x.arrival_time, reverse=True)
-    current_ws_name = latest_entries[0].workstation
+    current_ws_name = latest_entries[0].workstation    
 
-    # Validate the selected workstation
-    if selected_workstation not in workstation_sequence:
-        frappe.throw(f"Invalid workstation: {selected_workstation}")
+    returned_items = []
+
+    spare_parts_warehouse = "Spare Part Warehouse - UW"
+
+    for req in doc.required_items:
+        if req.custom_is_return and not req.custom_return_entry:
+            returned_items.append(req)
+
+    if returned_items:
+        return_stock_entry = frappe.new_doc("Stock Entry")
+        return_stock_entry.stock_entry_type = "Material Transfer"
+        return_stock_entry.purpose = "Material Transfer"
+        return_stock_entry.company = doc.company
+        return_stock_entry.flags.ignore_permissions = True
+
+        for item in returned_items:
+            # Find the last known workstation warehouse for the item
+            last_ws_row = next((x for x in reversed(latest_entries) if x.item == item.item_code and x.serial_no == item.custom_serial_number), None)
+            if not last_ws_row:
+                continue
+
+            return_stock_entry.append("items", {
+                "item_code": item.item_code,
+                "qty": item.required_qty or 1,
+                "serial_no": item.custom_serial_number,
+                "s_warehouse": last_ws_row.workstation_warehouse,
+                "t_warehouse": spare_parts_warehouse,
+                "use_serial_batch_fields": 1,
+                "allow_zero_valuation_rate": 1
+            })
+
+        if return_stock_entry.items:
+            return_stock_entry.insert()
+            return_stock_entry.submit()
+
+            # Link return entry to required items
+            for item in returned_items:
+                item.custom_return_entry = return_stock_entry.name
+    
+
 
     # Get the selected workstation and its warehouse
     selected_ws = frappe.get_doc("Workstation", selected_workstation)
@@ -103,25 +138,37 @@ def move_to_next_workstation(work_order_name, selected_workstation):
     new_movements = []
 
     for row in latest_entries:
-        if row.workstation == current_ws_name:
-            stock_entry.append("items", {
-                "item_code": row.item,
-                "qty": row.qty,
-                "s_warehouse": row.workstation_warehouse,
-                "t_warehouse": to_warehouse,
-                "serial_no": row.serial_no,
-                "use_serial_batch_fields": 1,
-                "allow_zero_valuation_rate":1
-            })
-            new_movements.append({
-                "workstation": selected_ws.name,
-                "workstation_warehouse": to_warehouse,
-                "item": row.item,
-                "qty": row.qty,
-                "arrival_time": now(),
-                "serial_no": row.serial_no,
-                "stock_entry": None
-            })
+
+        if row.workstation != current_ws_name:
+            continue
+
+        is_returned = False
+        for req in doc.required_items:
+            if req.item_code == row.item and req.custom_serial_number == row.serial_no and req.custom_is_return:
+                is_returned = True
+                break
+
+        if is_returned:
+            continue    
+
+        stock_entry.append("items", {
+            "item_code": row.item,
+            "qty": row.qty,
+            "s_warehouse": row.workstation_warehouse,
+            "t_warehouse": to_warehouse,
+            "serial_no": row.serial_no,
+            "use_serial_batch_fields": 1,
+            "allow_zero_valuation_rate":1
+        })
+        new_movements.append({
+            "workstation": selected_ws.name,
+            "workstation_warehouse": to_warehouse,
+            "item": row.item,
+            "qty": row.qty,
+            "arrival_time": now(),
+            "serial_no": row.serial_no,
+            "stock_entry": None
+        })
 
     # If new movements are created, save them
     if new_movements:
@@ -161,8 +208,11 @@ def on_submit_work(work_order_name):
     latest_entry = max(doc.custom_workstation_item_movement, key=lambda x: x.arrival_time)
     current_ws = latest_entry.workstation_warehouse
     for item in doc.required_items:
-        frappe.db.set_value("Work Order Item", item.name, "source_warehouse", current_ws, update_modified=False)
-        new_val = frappe.db.get_value("Work Order Item", item.name, "source_warehouse")
+        if not item.custom_is_return:
+            frappe.db.set_value("Work Order Item", item.name, "source_warehouse", current_ws, update_modified=False)
+        elif item.custom_return_entry:
+            frappe.db.set_value("Work Order Item", item.name, "source_warehouse", "Spare Part Warehouse - UW", update_modified=False)
+
 
 
     frappe.db.commit()

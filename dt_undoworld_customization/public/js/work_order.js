@@ -27,42 +27,46 @@ frappe.ui.form.on('Work Order', {
     refresh: function(frm) {
         if (frm.doc.docstatus === 0 && frm.doc.name) {
             frm.add_custom_button(__('Move to Next Workstation'), function() {
-                // Create a dialog with a dropdown for selecting a workstation
-                let dialog = new frappe.ui.Dialog({
-                    title: __('Select Workstation'),
-                    fields: [
-                        {
+                // Fetch workstation names
+                frappe.db.get_list('Workstation', {
+                    fields: ['name']
+                }).then(workstations => {
+                    let options = workstations.map(w => w.name);
+                    options.unshift(''); // Add blank option
+
+                    // Show dialog
+                    let dialog = new frappe.ui.Dialog({
+                        title: 'Select Workstation',
+                        fields: [{
                             fieldtype: 'Select',
-                            label: __('Workstation'),
+                            label: 'Workstation',
                             fieldname: 'workstation',
-                            options: ['','L1', 'L2', 'L3', 'L4'],  // Add all workstation options here
+                            options: options,
                             reqd: 1
-                        }
-                    ],
-                    primary_action: function() {
-                        let selected_workstation = dialog.get_values().workstation;
-                        // Call the backend method to move to the selected workstation
-                        frappe.call({
-                            method: "dt_undoworld_customization.public.py.work_order.move_to_next_workstation",
-                            args: {
-                                work_order_name: frm.doc.name,
-                                selected_workstation: selected_workstation  // Pass the selected workstation
-                            },
-                            callback: function(r) {
-                                if (!r.exc) {
-                                    frappe.msgprint(r.message || "Moved to next workstation.");
-                                    frm.reload_doc();
+                        }],
+                        primary_action_label: 'Move',
+                        primary_action(values) {
+                            frappe.call({
+                                method: "dt_undoworld_customization.public.py.work_order.move_to_next_workstation",
+                                args: {
+                                    work_order_name: frm.doc.name,
+                                    selected_workstation: values.workstation
+                                },
+                                callback(r) {
+                                    if (!r.exc) {
+                                        frappe.msgprint(r.message || "Moved to next workstation.");
+                                        frm.reload_doc();
+                                    }
                                 }
-                            }
-                        });
-                        dialog.hide();  // Hide dialog after submission
-                    },
-                    primary_action_label: __('Move')
+                            });
+                            dialog.hide();
+                        }
+                    });
+
+                    dialog.show();
                 });
-    
-                dialog.show();  // Show the dialog
             });
-        }  
+        }
     },
 
     after_save: function(frm) {
