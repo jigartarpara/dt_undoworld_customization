@@ -3,8 +3,8 @@ import frappe
 def before_submit(doc, method):
     # frappe.throw('testing')
     print ('\n\n\n\n\n')
-    if doc.is_return == 1:
-        clear_warranty_dates(doc.items)
+    # if doc.is_return == 1:
+    #     clear_warranty_dates(doc.items)
         
 
 def clear_warranty_dates(items):
