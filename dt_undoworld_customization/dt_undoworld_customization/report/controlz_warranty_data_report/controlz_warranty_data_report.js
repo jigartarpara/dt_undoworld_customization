@@ -4,7 +4,7 @@
 frappe.query_reports["ControlZ Warranty Data Report"] = {
 	"filters": [
     {"fieldname": "name", "label": "Serial Number", "fieldtype": "Link", "options": "Serial No"},
-    {"fieldname": "model_name", "label": "Model Name", "fieldtype": "Data"},
+    {"fieldname": "item_code", "label": "Item Code", "fieldtype": "Link",  "options": "Item"},
     {"fieldname": "warranty_start_date", "label": "Warrenty Start Date", "fieldtype": "Date"},
     {"fieldname": "warranty_expiry_date", "label": "Warrenty Expiry Date", "fieldtype": "Date"},
     {"fieldname": "warranty_days", "label": "Warrenty Days", "fieldtype": "Int"},
