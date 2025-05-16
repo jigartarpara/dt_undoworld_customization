@@ -3,7 +3,7 @@ import frappe
 def execute(filters=None):
     columns = [
         {"label": "BOM Number", "fieldname": "bom", "fieldtype": "Link", "options": "BOM", "width": 300},
-        {"label": "Item Name", "fieldname": "item_name", "fieldtype": "Data", "width": 350},
+        {"label": "Item Code", "fieldname": "item_code", "fieldtype": "Data", "width": 350},
         {"label": "Serial Number", "fieldname": "serial_number", "fieldtype": "Link", "options": "Serial No", "width": 180},
         {"label": "Created Date", "fieldname": "created_date", "fieldtype": "Datetime", "width": 180},
         {"label": "Created By", "fieldname": "created_by", "fieldtype": "Link", "options": "User","width": 200},
@@ -26,15 +26,15 @@ def execute(filters=None):
     bom_item_filters = {
         "custom_serial_no": ["in", serial_nos]
     }
-    if filters.get("item_name"):
-        bom_item_filters["item_name"] = ["like", f"%{filters['item_name']}%"]
+    if filters.get("item_code"):
+        bom_item_filters["item_code"] = ["like", f"%{filters['item_code']}%"]
     if filters.get("bom"):
         bom_item_filters["parent"] = filters["bom"]
 
     # Step 3: Fetch BOM Items
     bom_items = frappe.get_all("BOM Item",
         filters=bom_item_filters,
-        fields=["parent", "item_name", "custom_serial_no"]
+        fields=["parent", "item_code", "custom_serial_no"]
     )
 
     if not bom_items:
@@ -64,7 +64,7 @@ def execute(filters=None):
 
         data.append({
             "bom": bom["name"],
-            "item_name": item["item_name"],
+            "item_code": item["item_code"],
             "serial_number": item["custom_serial_no"],
             "created_date": bom["creation"],
             "created_by": bom["owner"],
