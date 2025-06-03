@@ -1,0 +1,105 @@
+{
+ "add_total_row": 0,
+ "columns": [],
+ "creation": "2025-06-03 14:11:43.130015",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "Undo World",
+ "letterhead": null,
+ "modified": "2025-06-03 14:11:43.130015",
+ "modified_by": "Administrator",
+ "module": "DT-UndoWorld-Customization",
+ "name": "ControlZ Sales Order Details Report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Sales Order",
+ "report_name": "ControlZ Sales Order Details Report",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Sales User"
+  },
+  {
+   "role": "Accounts User"
+  },
+  {
+   "role": "Sales Manager"
+  },
+  {
+   "role": "Stock User"
+  },
+  {
+   "role": "Maintenance User"
+  },
+  {
+   "role": "Z Purchase Order - Maker"
+  },
+  {
+   "role": "Z Purchase Order - Checker"
+  },
+  {
+   "role": "Z Purchase Order - Approver"
+  },
+  {
+   "role": "Z Purchase Receipt - Approver"
+  },
+  {
+   "role": "Z Purchase Receipt - Checker"
+  },
+  {
+   "role": "Z Purchase Receipt - Maker"
+  },
+  {
+   "role": "Z Sales Order - Maker"
+  },
+  {
+   "role": "Z Sales Order - Checker"
+  },
+  {
+   "role": "Z Sales Order - Approver"
+  },
+  {
+   "role": "Z Delivery Note - Approver"
+  },
+  {
+   "role": "Z Delivery Note - Checker"
+  },
+  {
+   "role": "Z Delivery Note - Maker"
+  },
+  {
+   "role": "Z Sales Invoice - Approver"
+  },
+  {
+   "role": "Z Sales Invoice - Checker"
+  },
+  {
+   "role": "Z Sales Invoice - Maker"
+  },
+  {
+   "role": "Z Credit Note - Approver"
+  },
+  {
+   "role": "Z Credit Note - Checker"
+  },
+  {
+   "role": "Z Credit Note - Maker"
+  },
+  {
+   "role": "Z Work Order - Maker"
+  },
+  {
+   "role": "Z Work Order - Checker"
+  },
+  {
+   "role": "Z Work Order - Checker"
+  },
+  {
+   "role": "Z Work Order - Approver"
+  }
+ ]
+}

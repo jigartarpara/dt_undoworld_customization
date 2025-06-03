@@ -321,7 +321,6 @@ class customStockEntry(StockEntry):
 								if wo_item.custom_serial_number:
 									item_dict[wo_item.item_code]["serial_no"] = wo_item.custom_serial_number
                                                                             
-					print(item_dict)
 					self.add_to_stock_entry_detail(item_dict)
 					for d in self.items:
 						if not d.s_warehouse:
