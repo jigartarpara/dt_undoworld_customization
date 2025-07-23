@@ -29,11 +29,12 @@ def before_validate(doc, method):
                 d.use_serial_batch_fields = 1
                 d.serial_no = s_no[0] + '-1'
             if check_consumable_item(d.item_code) == 1:
-                d.use_serial_batch_fields = 1
-                d.serial_no = s_no[0] + '-C'
-                sum_of_consumables = get_totals(doc.items, s_no[1])
-                # print(sum_of_consumables)
-                d.basic_rate = (sum_of_consumables - old_item_rate)
+                pass
+                # d.use_serial_batch_fields = 1
+                # d.serial_no = s_no[0] + '-C'
+                # sum_of_consumables = get_totals(doc.items, s_no[1])
+                # # print(sum_of_consumables)
+                # d.basic_rate = (sum_of_consumables - old_item_rate)
     
     
     # frappe.throw('code in process')

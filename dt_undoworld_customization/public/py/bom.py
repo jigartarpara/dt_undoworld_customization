@@ -19,11 +19,12 @@ def before_validate(doc, method):
             if d.custom_serial_no == None:
                 sum += d.amount
         if sum > 0:
-            doc.append('scrap_items', {
-                'item_code': frappe.db.get_single_value('DT-Customization Settings', 'scrap_item'),
-                'qty': 1,
-                'rate': sum
-            })
+            pass
+            # doc.append('scrap_items', {
+            #     'item_code': frappe.db.get_single_value('DT-Customization Settings', 'scrap_item'),
+            #     'qty': 1,
+            #     'rate': sum
+            # })
     # frappe.throw('test code')
 
 def validate(doc,method):
