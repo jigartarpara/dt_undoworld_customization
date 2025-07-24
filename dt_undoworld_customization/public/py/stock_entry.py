@@ -44,16 +44,16 @@ def before_validate(doc, method):
 def validate(doc,method):
     doc.get_stock_and_rate()
     # return 1
-    if doc.custom_finished_good_value_changed != 1:
-        old_item_rate = fetch_old_item_rate(doc.items)
-        for d in doc.items:
-            if d.is_finished_item == 1:
-                d.basic_rate = old_item_rate
-                d.valuation_rate = old_item_rate
-                d.basic_amount = old_item_rate
-                d.amount = old_item_rate
-        doc.total_incoming_value = doc.total_outgoing_value
-        doc.value_difference = 0
+    # if doc.custom_finished_good_value_changed != 1:
+    #     old_item_rate = fetch_old_item_rate(doc.items)
+    #     for d in doc.items:
+    #         if d.is_finished_item == 1:
+    #             d.basic_rate = old_item_rate
+    #             d.valuation_rate = old_item_rate
+    #             d.basic_amount = old_item_rate
+    #             d.amount = old_item_rate
+    #     doc.total_incoming_value = doc.total_outgoing_value
+    #     doc.value_difference = 0
     # doc.custom_finished_good_value_changed = 1
     
     
