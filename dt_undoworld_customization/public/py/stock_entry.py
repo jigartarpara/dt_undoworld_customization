@@ -42,6 +42,7 @@ def before_validate(doc, method):
 
     
 def validate(doc,method):
+    doc.get_stock_and_rate()
     # return 1
     if doc.custom_finished_good_value_changed != 1:
         old_item_rate = fetch_old_item_rate(doc.items)
